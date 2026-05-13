@@ -233,7 +233,7 @@ serve(async (req) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "Chef Brown Orders <orders@yourdomain.com>", // ← change to your verified domain
+        from: "Chef Brown Orders <onboarding@resend.dev>", // ← change to your verified domain
         to: [CHEF_EMAIL],
         subject: `🔔 Order ${orderNumber} — ${customerName} — GHS ${total}`,
         html,
