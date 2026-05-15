@@ -1,24 +1,30 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
-// Reads from .env → VITE_SUPABASE_URL
-const EDGE_FN_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-order-email`;
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const EDGE_FN_URL  = `${SUPABASE_URL}/functions/v1/send-order-email`;
+
+// Returns Supabase Storage URL for a dish photo
+function storedImg(id) {
+  return `${SUPABASE_URL}/storage/v1/object/public/menu-images/dish-${id}.jpg`;
+}
 
 // ── MENU DATA ────────────────────────────────────────────────────────────────
+// fallback = stock photo shown until Chef Brown uploads a real one
 const MENU = [
   // Rice
-  { id:1,  category:"Rice",     emoji:"🍗", name:"Fried Rice + Grilled Chicken",        desc:"Fragrant fried rice with perfectly grilled chicken",            price:35, img:"https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400&q=75" },
-  { id:2,  category:"Rice",     emoji:"🐟", name:"Fried Rice + Grilled Fish",            desc:"Light fried rice with seasoned grilled tilapia",                price:30, img:"https://images.unsplash.com/photo-1519984388953-d2406bc725e1?w=400&q=75" },
-  // Jollof — deep red tomato-based rice, distinct from fried rice
-  { id:3,  category:"Jollof",   emoji:"🍛", name:"Jollof + Grilled Chicken",             desc:"Smoky party jollof with charcoal-grilled chicken",              price:35, img:"https://images.unsplash.com/photo-1574484284002-952d92456975?w=400&q=75" },
-  { id:4,  category:"Jollof",   emoji:"🐠", name:"Jollof + Grilled Fish",                desc:"Rich tomato jollof with whole grilled fish",                    price:30, img:"https://images.unsplash.com/photo-1580822184713-fc5400e7fe10?w=400&q=75" },
-  // Assorted — loaded plates with multiple proteins
-  { id:5,  category:"Assorted", emoji:"🔥", name:"Assorted Fried Rice — Shito",          desc:"Sausage, chicken & gizzard on fried rice with shito",          price:50, img:"https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=75" },
-  { id:6,  category:"Assorted", emoji:"🌶️", name:"Assorted Fried Rice — Chilly Pepper",  desc:"Sausage, chicken & gizzard on fried rice with chilly pepper",  price:50, img:"https://images.unsplash.com/photo-1596560548464-f010b69e3d3a?w=400&q=75" },
-  { id:7,  category:"Assorted", emoji:"🍲", name:"Assorted Jollof — Shito",              desc:"Sausage, chicken & gizzard on smoky jollof with shito",        price:50, img:"https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=400&q=75" },
-  { id:8,  category:"Assorted", emoji:"🌶️", name:"Assorted Jollof — Chilly Pepper",      desc:"Sausage, chicken & gizzard on smoky jollof with chilly pepper",price:50, img:"https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=400&q=75" },
+  { id:1,  category:"Rice",     emoji:"🍗", name:"Fried Rice + Grilled Chicken",        desc:"Fragrant fried rice with perfectly grilled chicken",            price:35, fallback:"https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400&q=75" },
+  { id:2,  category:"Rice",     emoji:"🐠", name:"Fried Rice + Grilled Fish",            desc:"Light fried rice with seasoned grilled tilapia",                price:30, fallback:"https://images.unsplash.com/photo-1544943910-4c1dc44aab44?w=400&q=75" },
+  // Jollof
+  { id:3,  category:"Jollof",   emoji:"🍛", name:"Jollof + Grilled Chicken",             desc:"Smoky party jollof with charcoal-grilled chicken",              price:35, fallback:"https://images.unsplash.com/photo-1574484284002-952d92456975?w=400&q=75" },
+  { id:4,  category:"Jollof",   emoji:"🐡", name:"Jollof + Grilled Fish",                desc:"Rich tomato jollof with whole grilled fish",                    price:30, fallback:"https://images.unsplash.com/photo-1580822184713-fc5400e7fe10?w=400&q=75" },
+  // Assorted
+  { id:5,  category:"Assorted", emoji:"🔥", name:"Assorted Fried Rice — Shito",         desc:"Sausage, chicken & gizzard on fried rice with shito",          price:50, fallback:"https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=75" },
+  { id:6,  category:"Assorted", emoji:"🌶️", name:"Assorted Fried Rice — Chilly Pepper", desc:"Sausage, chicken & gizzard on fried rice with chilly pepper",  price:50, fallback:"https://images.unsplash.com/photo-1596560548464-f010b69e3d3a?w=400&q=75" },
+  { id:7,  category:"Assorted", emoji:"🍲", name:"Assorted Jollof — Shito",             desc:"Sausage, chicken & gizzard on smoky jollof with shito",        price:50, fallback:"https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=400&q=75" },
+  { id:8,  category:"Assorted", emoji:"🌶️", name:"Assorted Jollof — Chilly Pepper",   desc:"Sausage, chicken & gizzard on smoky jollof with chilly pepper",price:50, fallback:"https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=400&q=75" },
   // Sides
-  { id:9,  category:"Sides",    emoji:"🥗", name:"Ghanaian Salad",                       desc:"Fresh garden salad with Ghanaian-style dressing",              price:20, img:"https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400&q=75" },
-  { id:10, category:"Sides",    emoji:"🥚", name:"Boiled Egg + Hot Pepper",              desc:"Classic boiled eggs with spicy hot pepper sauce",              price:10, img:"https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=400&q=75" },
+  { id:9,  category:"Sides",    emoji:"🥗", name:"Ghanaian Salad",                       desc:"Fresh garden salad with Ghanaian-style dressing",              price:20, fallback:"https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&q=75" },
+  { id:10, category:"Sides",    emoji:"🥚", name:"Boiled Egg + Hot Pepper",              desc:"Classic boiled eggs with spicy hot pepper sauce",              price:10, fallback:"https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=400&q=75" },
 ];
 
 const CATS = ["All", ...Array.from(new Set(MENU.map(m => m.category)))];
@@ -62,6 +68,8 @@ function Toast({ msg, show, err }) {
 // ── MENU CARD ─────────────────────────────────────────────────────────────────
 function Card({ item, qty, onAdd, onRemove }) {
   const sel = qty > 0;
+  // Try Supabase Storage first; fall back to stock photo on error
+  const [imgSrc, setImgSrc] = useState(storedImg(item.id));
   return (
     <div style={{
       background:C.bg2, borderRadius:18, overflow:"hidden",
@@ -70,9 +78,9 @@ function Card({ item, qty, onAdd, onRemove }) {
       transform:sel?"translateY(-3px)":"none",
       transition:"all .2s",
     }}>
-      <img src={item.img} alt={item.name}
+      <img src={imgSrc} alt={item.name}
         style={{ width:"100%", height:155, objectFit:"cover", display:"block", background:C.bg3 }}
-        onError={e=>e.target.style.display="none"} />
+        onError={()=>setImgSrc(item.fallback)} />
       <div style={{ padding:"15px 17px 17px" }}>
         <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:".63rem", fontWeight:700, letterSpacing:".18em", textTransform:"uppercase", color:C.gold, marginBottom:4 }}>{item.category}</div>
         <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:700, fontSize:".97rem", textTransform:"uppercase", color:C.white, lineHeight:1.2, marginBottom:5 }}>{item.name}</div>
