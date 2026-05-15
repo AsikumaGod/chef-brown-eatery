@@ -5,15 +5,19 @@ const EDGE_FN_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-orde
 
 // ── MENU DATA ────────────────────────────────────────────────────────────────
 const MENU = [
+  // Rice
   { id:1,  category:"Rice",     emoji:"🍗", name:"Fried Rice + Grilled Chicken",        desc:"Fragrant fried rice with perfectly grilled chicken",            price:35, img:"https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400&q=75" },
-  { id:2,  category:"Rice",     emoji:"🐟", name:"Fried Rice + Grilled Fish",            desc:"Light fried rice with seasoned grilled tilapia",                price:30, img:"https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=75" },
-  { id:3,  category:"Jollof",   emoji:"🍛", name:"Jollof + Grilled Chicken",             desc:"Smoky party jollof with charcoal-grilled chicken",              price:35, img:"https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&q=75" },
-  { id:4,  category:"Jollof",   emoji:"🐠", name:"Jollof + Grilled Fish",                desc:"Rich tomato jollof with whole grilled fish",                    price:30, img:"https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&q=75" },
+  { id:2,  category:"Rice",     emoji:"🐟", name:"Fried Rice + Grilled Fish",            desc:"Light fried rice with seasoned grilled tilapia",                price:30, img:"https://images.unsplash.com/photo-1519984388953-d2406bc725e1?w=400&q=75" },
+  // Jollof — deep red tomato-based rice, distinct from fried rice
+  { id:3,  category:"Jollof",   emoji:"🍛", name:"Jollof + Grilled Chicken",             desc:"Smoky party jollof with charcoal-grilled chicken",              price:35, img:"https://images.unsplash.com/photo-1574484284002-952d92456975?w=400&q=75" },
+  { id:4,  category:"Jollof",   emoji:"🐠", name:"Jollof + Grilled Fish",                desc:"Rich tomato jollof with whole grilled fish",                    price:30, img:"https://images.unsplash.com/photo-1580822184713-fc5400e7fe10?w=400&q=75" },
+  // Assorted — loaded plates with multiple proteins
   { id:5,  category:"Assorted", emoji:"🔥", name:"Assorted Fried Rice — Shito",          desc:"Sausage, chicken & gizzard on fried rice with shito",          price:50, img:"https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=75" },
-  { id:6,  category:"Assorted", emoji:"🌶️", name:"Assorted Fried Rice — Chilly Pepper",  desc:"Sausage, chicken & gizzard on fried rice with chilly pepper",  price:50, img:"https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&q=75" },
-  { id:7,  category:"Assorted", emoji:"🍲", name:"Assorted Jollof — Shito",              desc:"Sausage, chicken & gizzard on smoky jollof with shito",        price:50, img:"https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&q=75" },
-  { id:8,  category:"Assorted", emoji:"🌶️", name:"Assorted Jollof — Chilly Pepper",      desc:"Sausage, chicken & gizzard on smoky jollof with chilly pepper",price:50, img:"https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&q=75" },
-  { id:9,  category:"Sides",    emoji:"🥗", name:"Ghanaian Salad",                       desc:"Fresh garden salad with Ghanaian-style dressing",              price:20, img:"https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=75" },
+  { id:6,  category:"Assorted", emoji:"🌶️", name:"Assorted Fried Rice — Chilly Pepper",  desc:"Sausage, chicken & gizzard on fried rice with chilly pepper",  price:50, img:"https://images.unsplash.com/photo-1596560548464-f010b69e3d3a?w=400&q=75" },
+  { id:7,  category:"Assorted", emoji:"🍲", name:"Assorted Jollof — Shito",              desc:"Sausage, chicken & gizzard on smoky jollof with shito",        price:50, img:"https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=400&q=75" },
+  { id:8,  category:"Assorted", emoji:"🌶️", name:"Assorted Jollof — Chilly Pepper",      desc:"Sausage, chicken & gizzard on smoky jollof with chilly pepper",price:50, img:"https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=400&q=75" },
+  // Sides
+  { id:9,  category:"Sides",    emoji:"🥗", name:"Ghanaian Salad",                       desc:"Fresh garden salad with Ghanaian-style dressing",              price:20, img:"https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400&q=75" },
   { id:10, category:"Sides",    emoji:"🥚", name:"Boiled Egg + Hot Pepper",              desc:"Classic boiled eggs with spicy hot pepper sauce",              price:10, img:"https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=400&q=75" },
 ];
 
