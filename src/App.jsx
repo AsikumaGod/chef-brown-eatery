@@ -429,13 +429,15 @@ export default function App() {
           📍 <strong style={{ color:C.text }}>Watico Campus Gate (Kesstown)</strong>
           &nbsp;·&nbsp; 📞 <strong style={{ color:C.text }}>0544248387</strong>
         </div>
-        <footer style={{ textAlign:"center",padding:"22px",fontSize:".74rem",color:"rgba(138,96,48,.4)",borderTop:`1px solid ${C.border}` }}>
-          © 2025 Chef Brown Taste &amp; Tell Eatery
+        <footer style={{ borderTop:`1px solid ${C.border}`, padding:"28px 24px 22px", display:"flex", flexDirection:"column", alignItems:"center", gap:14 }}>
+          <CreatorBadge />
+          <span style={{ fontSize:".74rem", color:"rgba(138,96,48,.4)" }}>
+            © 2026 Chef Brown Taste &amp; Tell Eatery
+          </span>
         </footer>
 
         {drawer&&<CartDrawer cart={cart} onClose={()=>setDrawer(false)} onAdd={addItem} onRemove={removeItem} onCheckout={handleCheckout} />}
         <Toast msg={toast.msg} show={toast.show} err={toast.err} />
-        <CreatorBadge />
       </div>
     </>
   );

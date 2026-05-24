@@ -468,16 +468,20 @@ export default function Admin() {
         {/* Stats footer */}
         <div style={{
           background: C.bg2, borderTop: `1px solid ${C.border}`,
-          padding: "16px 24px", textAlign: "center",
-          fontSize: ".78rem", color: C.muted,
+          padding: "20px 24px 18px", textAlign: "center",
+          display: "flex", flexDirection: "column", alignItems: "center", gap: 12,
         }}>
-          {Object.keys(uploadedImgs).length > 0
-            ? `✅ ${Object.keys(uploadedImgs).length} photo${Object.keys(uploadedImgs).length !== 1 ? "s" : ""} updated this session`
-            : "No photos updated yet this session"}
-          {" · "}Photos stored in Supabase Storage · Changes are live immediately
+          <div style={{ fontSize: ".78rem", color: C.muted }}>
+            {Object.keys(uploadedImgs).length > 0
+              ? `✅ ${Object.keys(uploadedImgs).length} photo${Object.keys(uploadedImgs).length !== 1 ? "s" : ""} updated this session`
+              : "No photos updated yet this session"}
+            {" · "}Photos stored in Supabase Storage · Changes are live immediately
+          </div>
+          <CreatorBadge />
+          <span style={{ fontSize: ".72rem", color: "rgba(138,96,48,.35)" }}>
+            © 2026 Chef Brown Taste &amp; Tell Eatery
+          </span>
         </div>
-
-        <CreatorBadge />
 
         {/* Toast */}
         <div style={{
