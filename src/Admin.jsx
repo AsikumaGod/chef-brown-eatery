@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import CreatorBadge from "./CreatorBadge.jsx";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -475,6 +476,8 @@ export default function Admin() {
             : "No photos updated yet this session"}
           {" · "}Photos stored in Supabase Storage · Changes are live immediately
         </div>
+
+        <CreatorBadge />
 
         {/* Toast */}
         <div style={{

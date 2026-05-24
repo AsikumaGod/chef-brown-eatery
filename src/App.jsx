@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import CreatorBadge from "./CreatorBadge.jsx";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const EDGE_FN_URL  = `${SUPABASE_URL}/functions/v1/send-order-email`;
@@ -429,11 +430,12 @@ export default function App() {
           &nbsp;·&nbsp; 📞 <strong style={{ color:C.text }}>0544248387</strong>
         </div>
         <footer style={{ textAlign:"center",padding:"22px",fontSize:".74rem",color:"rgba(138,96,48,.4)",borderTop:`1px solid ${C.border}` }}>
-          © 2025 Chef Brown Taste &amp; Tell Eatery · Made with ❤️ in Ghana
+          © 2025 Chef Brown Taste &amp; Tell Eatery
         </footer>
 
         {drawer&&<CartDrawer cart={cart} onClose={()=>setDrawer(false)} onAdd={addItem} onRemove={removeItem} onCheckout={handleCheckout} />}
         <Toast msg={toast.msg} show={toast.show} err={toast.err} />
+        <CreatorBadge />
       </div>
     </>
   );
